@@ -53,7 +53,7 @@ insert into Tarifs values
 -- passé en argument
 create or replace function taille(dimensions int[]) returns int as $$
 declare
-  sorted int[] := (select array(select unnest(dimensions) order by unnest desc));
+  sorted int[] := array(select unnest(dimensions) order by unnest desc);
 begin
   return (select sum(unnest) from unnest(sorted[0:2]));
 end;
