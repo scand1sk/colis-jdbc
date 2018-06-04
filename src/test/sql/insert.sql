@@ -3,9 +3,9 @@ insert into Client values
   (-2, 'titi@mail.com', null);
 
 insert into Lieu values
-  (-1, 'Valenciennes', true),
-  (-2, 'Maubeuge', true),
-  (-3, 'Centre de tri Nord', false);
+  (-1, 'Valenciennes'),
+  (-2, 'Maubeuge'),
+  (-3, 'Centre de tri Nord');
 
 insert into Employe values
   (-1, 'Roger'),

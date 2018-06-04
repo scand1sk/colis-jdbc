@@ -9,12 +9,10 @@ import java.util.Optional;
 public class Lieu {
     private final int idLieu;
     private String adresse;
-    private boolean ouvertPublic;
 
-    public Lieu(int idLieu, String adresse, boolean ouvertPublic) {
+    public Lieu(int idLieu, String adresse) {
         this.idLieu = idLieu;
         this.adresse = adresse;
-        this.ouvertPublic = ouvertPublic;
     }
 
     public static Optional<Lieu> load(Connection con, int idLieu) throws SQLException {
@@ -33,9 +31,8 @@ public class Lieu {
 
     public static Lieu loadOne(ResultSet rs) throws SQLException {
         String adresse = rs.getString("adresse");
-        boolean ouvertPublic = rs.getBoolean("ouvertPublic");
         int idLieu = rs.getInt("idLieu");
-        return new Lieu(idLieu, adresse, ouvertPublic);
+        return new Lieu(idLieu, adresse);
     }
 
     public int getIdLieu() {
@@ -47,7 +44,6 @@ public class Lieu {
         return "Lieu{" +
                 "idLieu=" + idLieu +
                 ", adresse='" + adresse + '\'' +
-                ", ouvertPublic=" + ouvertPublic +
                 '}';
     }
 }

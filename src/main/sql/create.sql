@@ -7,8 +7,7 @@ CREATE TABLE Client (
 
 CREATE TABLE Lieu (
   idLieu serial primary key,
-  adresse text not null,
-  ouvertPublic boolean not null default false);
+  adresse text not null);
 
 CREATE TABLE Employe (
   idEmploye serial primary key,
@@ -26,7 +25,8 @@ CREATE TABLE Colis (
   destinataire int not null references Client,
   pointDestination int references Lieu,
   livreur int references Employe,
-  prix numeric(10,2) not null);
+  prix numeric(10,2) not null,
+  check (livraison > creation));
 
 CREATE TABLE Entree (
   noColis int references Colis,
