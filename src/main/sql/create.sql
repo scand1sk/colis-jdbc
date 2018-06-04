@@ -51,27 +51,23 @@ insert into Tarifs values
 
 -- Cette fonction renvoie la somme des deux plus grands éléments du tableau
 -- passé en argument
-create or replace function taille(dimensions int[]) returns int as $$
-declare
-  sorted int[] := array(select unnest(dimensions) order by unnest desc);
-begin
-  return (select sum(unnest) from unnest(sorted[0:2]));
-end;
-$$ language plpgsql;
+create or replace function taille(dimensions int[]) returns bigint as $$
+    with Largest as (
+      select unnest
+      from unnest(dimensions)
+      order by unnest desc
+      limit 2)
+    select sum(unnest) from Largest;
+$$ language sql;
 
 -- Renvoie le tarif en vigueur le plus petit correspondant aux contraintes
 -- de taille et de poids.
 create or replace function tarif(dimensions int[], poids real) returns numeric as $$
-declare
-  L int := taille(dimensions);
-begin
-  return (
     select prix from Tarifs
-    where date <= current_date and poids <= poidsMini and L <= tailleMini
+    where date <= current_date and poids <= poidsMini and taille(dimensions) <= tailleMini
     order by date desc, prix asc
-    limit 1);
-end;
-$$ language plpgsql;
+    limit 1;
+$$ language sql;
 
 -- Ce trigger remplit automatiquement le champ "tarif" si celui ci est
 -- null au moment de l'insertion
